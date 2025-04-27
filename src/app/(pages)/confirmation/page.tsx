@@ -4,7 +4,7 @@ import { sendConfirmation, sendEmail } from "@/app/actions";
 import { toaster } from "@/components/ui/toaster";
 import { Button, Card, Container, Field, Flex, Input, Stack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { FormEventHandler, useCallback } from "react";
+import { FormEventHandler, useCallback, useState } from "react";
 
 type FormSchema = {
   name: string;
@@ -13,6 +13,8 @@ type FormSchema = {
 
 export default function ConfirmationPage() {
 
+  const [loading, setLoading] = useState(false)
+
   const navigate = useRouter()
 
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(async (e) => {
@@ -20,6 +22,8 @@ export default function ConfirmationPage() {
 
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries()) as FormSchema;
+
+    setLoading(true)
 
     try {
       await sendConfirmation(data)
@@ -51,6 +55,8 @@ export default function ConfirmationPage() {
         type: 'error',
         description: error?.message
       })
+    } finally {
+      setLoading(false)
     }
   }, [navigate])
 
@@ -83,7 +89,9 @@ export default function ConfirmationPage() {
             <Card.Footer>
               <Flex gap={2} justify="space-between" width="100%">
                 <Button onClick={onCancel}>Cancelar</Button>
-                <Button type="submit">Confirmar</Button>
+                <Button type="submit" disabled={loading} loading={loading}>
+                  Confirmar
+                </Button>
               </Flex>
             </Card.Footer>
           </form>
