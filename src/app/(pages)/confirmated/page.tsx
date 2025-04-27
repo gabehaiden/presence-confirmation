@@ -8,6 +8,8 @@ type Guests = {
   email: string;
 }
 
+export const dynamic = "force-dynamic"
+
 export default async function Confirmated() {
 
   const items = await supabase
