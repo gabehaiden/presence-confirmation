@@ -14,8 +14,6 @@ export default async function Confirmated() {
     .from('guests')
     .select<"*", Guests>()
 
-  console.log(items)
-
   return (
     <Container height="full">
       <Flex height="full" justify="center" align="center">
