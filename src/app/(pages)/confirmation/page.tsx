@@ -26,8 +26,6 @@ export default function ConfirmationPage() {
     setLoading(true)
 
     try {
-      await sendConfirmation(data)
-
       await Promise.all([
         sendConfirmation(data),
         sendEmail({
